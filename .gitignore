@@ -1,0 +1,85 @@
+# ─── Environment / secrets ──────────────────────────────────────
+.env
+.env.local
+.env.*.local
+.env.production
+.env.staging
+*.env
+
+# ─── Database files (local dev only — never commit real data) ───
+*.db
+*.sqlite
+*.sqlite3
+*.db-shm
+*.db-wal
+hush.db
+
+# ─── Certificates / private keys ────────────────────────────────
+*.pem
+*.p12
+*.cer
+*.crt
+*.key
+*.pkcs12
+*.client_secret.json
+
+# ─── Python ─────────────────────────────────────────────────────
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+var/
+sdist/
+develop-eggs/
+.installed.cfg
+lib/
+lib64/
+
+# ─── Virtual environments ────────────────────────────────────────
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# ─── Testing / coverage ─────────────────────────────────────────
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+.tox/
+.nox/
+
+# ─── Alembic ────────────────────────────────────────────────────
+# Migration scripts are safe to commit — only exclude the DB itself
+# (already covered above)
+
+# ─── IDE ────────────────────────────────────────────────────────
+.idea/
+.vscode/
+*.iml
+
+# ─── OS ─────────────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+Desktop.ini
+
+# ─── Logs ───────────────────────────────────────────────────────
+*.log
+logs/
+
+# ─── Misc ───────────────────────────────────────────────────────
+*.swp
+*.bak
+.history

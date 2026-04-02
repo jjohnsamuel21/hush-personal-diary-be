@@ -1,0 +1,10 @@
+.env
+.git
+__pycache__
+*.pyc
+*.pyo
+.pytest_cache
+hush.db
+*.db-shm
+*.db-wal
+alembic/versions/*.pyc

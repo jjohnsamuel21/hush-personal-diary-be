@@ -22,6 +22,14 @@ class Settings(BaseSettings):
     # Database
     database_url: str = "sqlite+aiosqlite:///./hush.db"
 
+    @field_validator('database_url', mode='after')
+    @classmethod
+    def fix_async_driver(cls, v: str) -> str:
+        # Railway injects postgresql:// but SQLAlchemy async requires postgresql+asyncpg://
+        if v.startswith('postgresql://'):
+            return v.replace('postgresql://', 'postgresql+asyncpg://', 1)
+        return v
+
     # CORS
     allowed_origins: str = "http://localhost:3000"
 

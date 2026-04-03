@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
 from app.database import init_db
-from app.routers import auth, notes, invites
+from app.routers import auth, notes, invites, collab
 
 
 @asynccontextmanager
@@ -45,6 +45,7 @@ app.add_middleware(
 app.include_router(auth.router)
 app.include_router(notes.router)
 app.include_router(invites.router)
+app.include_router(collab.router)
 
 
 # ---------------------------------------------------------------------------

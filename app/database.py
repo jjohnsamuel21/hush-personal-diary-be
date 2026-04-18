@@ -1,3 +1,5 @@
+import ssl
+
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
 from sqlalchemy.orm import DeclarativeBase
 
@@ -9,12 +11,17 @@ class Base(DeclarativeBase):
 
 
 # Create the async engine.
-# connect_args is only needed for SQLite to allow the same connection to be
-# used across threads (FastAPI runs in a threadpool for sync code, but we use
-# async throughout, so this is a safety net).
-_connect_args = {}
+_connect_args: dict = {}
 if settings.database_url.startswith("sqlite"):
     _connect_args = {"check_same_thread": False}
+elif settings.database_url.startswith("postgresql"):
+    # asyncpg requires ssl via connect_args, not URL query params.
+    # Supabase's session pooler uses a self-signed intermediate cert, so we
+    # require encryption but skip chain verification (standard for Supabase pooler).
+    _ssl_ctx = ssl.create_default_context()
+    _ssl_ctx.check_hostname = False
+    _ssl_ctx.verify_mode = ssl.CERT_NONE
+    _connect_args = {"ssl": _ssl_ctx}
 
 engine = create_async_engine(
     settings.database_url,

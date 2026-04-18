@@ -25,9 +25,12 @@ class Settings(BaseSettings):
     @field_validator('database_url', mode='after')
     @classmethod
     def fix_async_driver(cls, v: str) -> str:
-        # Railway injects postgresql:// but SQLAlchemy async requires postgresql+asyncpg://
+        # Hosting platforms inject postgresql:// but SQLAlchemy async requires postgresql+asyncpg://
         if v.startswith('postgresql://'):
-            return v.replace('postgresql://', 'postgresql+asyncpg://', 1)
+            v = v.replace('postgresql://', 'postgresql+asyncpg://', 1)
+        # Strip SSL query params — asyncpg requires ssl via connect_args, not URL params
+        for param in ('sslmode=require', 'sslmode=prefer', 'ssl=true', 'ssl=require'):
+            v = v.replace(f'?{param}', '').replace(f'&{param}', '')
         return v
 
     # CORS
